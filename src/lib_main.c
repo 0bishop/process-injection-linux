@@ -11,10 +11,7 @@ extern int inject_code(char *filename, char *function_name, char *filename_shell
 {
     info_t *inf = NULL;
 
-    if (!(inf = init_struct(filename, function_name, filename_shellcode)) ||
+    return (!(inf = init_struct(filename, function_name, filename_shellcode)) ||
     !(inf->function_adress = get_function_adress(inf)) ||
-    !injection(inf))
-        return -1;
-
-    free_struct(inf);
+    !injection(inf)) ? -1 : free_struct(inf);
 }

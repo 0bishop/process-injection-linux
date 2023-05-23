@@ -51,7 +51,6 @@ static int inject_data(pid_t pid, unsigned char* src, void* dst, int len)
 extern int injection(info_t *inf)
 {
     pid_t target = atoi(inf->pid);
-    int syscall;
     char *buffer = NULL;
 
     printf("[+] Base adress at %p\n[+] Function offset at %p\n[+] Function adress at %p\n",
