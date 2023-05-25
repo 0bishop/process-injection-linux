@@ -18,6 +18,6 @@ make
 ```c
 extern
 int inject_code(char *filename, char *function_name, char *filename_shellcode);
-// Return 1 if an error has been caught else 0, create an Issues if u get a SEGV
+// Return 1 if an error has been caught else 0, create an Issue if u get a SEGV
 ```
 
