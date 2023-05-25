@@ -100,6 +100,14 @@ static unsigned long int core_base_addr(info_t *inf)
     return base_adress;
 }
 
+static bool check_if_path(char *filename)
+{
+    for (int i = 0; filename[i]; i++)
+        if (filename[i] == '/' || filename[i] == '.' || filename[i] == '~')
+            return true;
+    return false;
+}
+
 extern unsigned long int get_base_addr(info_t *inf)
 {
     inf->pid = get_proc_pid(inf->filename);
@@ -107,7 +115,7 @@ extern unsigned long int get_base_addr(info_t *inf)
     if (!inf->pid) {
         put(2, "Error: ");
         put(2, inf->filename);
-        put(2, " not found in current process\n");
+        put(2, (!check_if_path(inf->filename)) ? " not found in current process list\n" : " is a path, not a current process name\n");
         return 0;
     }
     return core_base_addr(inf);
