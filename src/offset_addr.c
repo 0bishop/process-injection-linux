@@ -4,7 +4,7 @@ extern unsigned long int get_function_offset(info_t *inf)
 {
     bfd* binary;
     bfd_init();
-    binary = bfd_openr(inf->filename, NULL);
+    binary = bfd_openr(inf->filename_path, NULL);
     if (binary == NULL) {
         put(2, "Error: Failed to open binary\n");
         return 0;

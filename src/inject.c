@@ -1,7 +1,7 @@
 #include "../include/lib.h"
 
 static unsigned char* get_shellcode(info_t *inf) {
-    int fd = open("shellcode.bin", O_RDONLY);
+    int fd = open(inf->filename_shellcode, O_RDONLY);
     if (fd == -1) {
         put(2, "Error: Failed to open file\n");
         return NULL;

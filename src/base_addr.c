@@ -42,7 +42,26 @@ static char *get_proc_pid(char *name)
     return NULL;
 }
 
-static char *get_token(char *path)
+static char* parse_path(const char* line) {
+    const char* end = NULL;
+    const char* start = strrchr(line, ' ');
+    char* path = NULL;
+    size_t length = 0;
+
+    if (!start)
+        return NULL;
+    start++;
+    end = strchr(start, '\n');
+    if (!end)
+        end = strchr(start, '\0');
+    length = end - start;
+
+    path = strncpy(malloc(length + 1), start, length);
+    path[length] = '\0';
+    return path;
+}
+
+static char *get_token(info_t *inf, char *path)
 {
 
     char *line = NULL;
@@ -56,21 +75,23 @@ static char *get_token(char *path)
     while ((read = getline(&line, &len, fp)) != -1)
         break;
     fclose(fp);
+    inf->filename_path = parse_path(line);
     return strtok(line, "-");
 }
 
-static unsigned long int core_base_addr(char *pid)
+static unsigned long int core_base_addr(info_t *inf)
 {
     unsigned long int base_adress = 0;
     char *buff = NULL;
-    char *path = strcat(strcat(strcpy(malloc(sizeof(char) * (strlen(pid) + 12)), "/proc/"), pid), "/maps");
+    char *tmp = NULL;
+    char *path = strcat(strcat(strcpy(malloc(sizeof(char) * (strlen(inf->pid) + 12)), "/proc/"), inf->pid), "/maps");
     
-    if (!(buff = get_token(path))) {
+    if (!(buff = get_token(inf, path))) {
         free(path);
-        free(pid);
+        free(inf->pid);
         return -1;
     }
-    char *tmp = malloc(sizeof(char) * (strlen(buff) + 3));
+    tmp = malloc(sizeof(char) * (strlen(buff) + 3));
     base_adress = strtol(strcat(strcpy(tmp, "0x"), buff), NULL, 16);
 
     free(tmp);
@@ -89,5 +110,5 @@ extern unsigned long int get_base_addr(info_t *inf)
         put(2, " not found in current process\n");
         return 0;
     }
-    return core_base_addr(inf->pid);
+    return core_base_addr(inf);
 }
