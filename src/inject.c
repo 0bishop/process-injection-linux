@@ -3,7 +3,7 @@
 static unsigned char* get_shellcode(info_t *inf) {
     int fd = open(inf->filename_shellcode, O_RDONLY);
     if (fd == -1) {
-        put(2, "Error: Failed to open file\n");
+        put(2, "Error: Failed to open ShellCode file\n");
         return NULL;
     }
 
@@ -22,7 +22,7 @@ static unsigned char* get_shellcode(info_t *inf) {
     if (read_size != file_size) {
         close(fd);
         free(buffer);
-        put(2, "Error: Failed to read file\n");
+        put(2, "Error: Failed to read ShellCode file\n");
         return NULL;
     }
     close(fd);
@@ -51,8 +51,10 @@ static int inject_data(pid_t pid, unsigned char* src, void* dst, int len)
 extern int injection(info_t *inf)
 {
     pid_t target = atoi(inf->pid);
-    char *buffer = NULL;
+    char *buffer = get_shellcode(inf);
 
+    if (!buffer)
+        return 0;
     printf("[+] Base adress at %p\n[+] Function offset at %p\n[+] Function adress at %p\n",
     (void*)inf->base_addr, (void*)inf->function_offset, (void*)inf->function_adress);
     printf("[+] Attach process %d\n", target);
@@ -70,8 +72,7 @@ extern int injection(info_t *inf)
 
     printf("[+] Injecting ShellCode at %p\n", (void*)inf->function_adress);
 
-    if (!(buffer = get_shellcode(inf)) ||
-    !inject_data(target, buffer, (void*)inf->function_adress, inf->size_shellcode))
+    if (!inject_data(target, buffer, (void*)inf->function_adress, inf->size_shellcode))
         return 0;
 
     free(buffer);

@@ -43,7 +43,7 @@ extern unsigned long int get_function_offset(info_t *inf)
     free(symbol_table);
     bfd_close(binary);
     if (!flag) {
-        put(2, "Error: Function offset not found\n");
+        put(2, "Error: Function offset not found, try with another function name\n");
         return 0;
     }
     return offset;
