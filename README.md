@@ -6,7 +6,7 @@
 ```bash
 sudo apt install binutils-dev
 git clone git@github.com:0bishop/lib-injection-linux.git
-cd lib-injection-linux/
+cd process-injection-linux/
 make
 ```
 
