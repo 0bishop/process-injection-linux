@@ -4,7 +4,7 @@
 
 ## Requirements & Installation:
 ```bash
-sudo apt install binutils-dev
+sudo apt install -y binutils-dev
 git clone git@github.com:0bishop/lib-injection-linux.git
 cd lib-injection-linux/
 make
