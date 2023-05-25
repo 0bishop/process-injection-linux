@@ -25,6 +25,7 @@
 
     typedef struct info_s {
         char *filename;
+        char *filename_path;
         char *function_name;
         char *filename_shellcode;
         char *pid;
