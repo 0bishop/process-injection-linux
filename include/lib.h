@@ -43,5 +43,6 @@
     extern int inject_code(char *filename, char *function_name, char *filename_shellcode);
     extern int injection(info_t *inf);
     extern int put(int fd, char *str);
+    extern bool get_scope(void);
 
 #endif /* !LIB_H */
